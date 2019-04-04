@@ -47,10 +47,22 @@ atoplamtutar_model_musteri <- data.frame(tb_toplamtutar$musterino,tb_toplamtutar
                                        tb_islemsayisi$islemsayisi,tb_gecengunsayisi$gecengunsayisi)
 colnames(atoplamtutar_model_musteri) <-c("musterino","toplamtutar","sonislemtarih","islemsayisi","gecengunsayisi")
 
+
 ##---------------------------------------------RFM Score, RFM Table hesaplamaları-----------------------------
 atoplamtutar_rfm_result <- rfm_table_customer(atoplamtutar_model_musteri,musterino,
                                             islemsayisi,gecengunsayisi,toplamtutar,refday)
 atoplamtutar_rfm_result
+
+
+##---------------------------------------------kmeans algort--------------------------------------------------
+## 1.metod
+toplamtutar_kmeans <-data.frame(toplamtutar_model_musteri$musterino,log(toplamtutar_model_musteri$toplamtutar),toplamtutar_model_musteri$islemsayisi,toplamtutar_model_musteri$gecengunsayisi)
+colnames(toplamtutar_kmeans) <- c("musterino", "toplamtutar","islemsayisi","gecengunsayisi")
+
+## 2.metod
+toplamtutar_rfm_table<- toplamtutar_rfm_result$rfm
+toplamtutar_rfm_table$amount <- log(toplamtutar_rfm_table$amount)
+
 
 ##-----------------------------------------------Heat Map-----------------------------------------------------
 rfm_heatmap(atoplamtutar_rfm_result)
